@@ -2,8 +2,8 @@
 # One thing to change: put your GitHub username and repo name below.
 backend:
   name: github
-  repo: jiwonbaeq/Portfolio-Website
-  branch: main
+  repo: jiwonbaeq/Portfolio
+  branch: master
   commit_messages:
     update: "Update {{collection}}"
 
