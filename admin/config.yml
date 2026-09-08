@@ -1,0 +1,67 @@
+# ── Sveltia CMS configuration ─────────────────────────────────
+# One thing to change: put your GitHub username and repo name below.
+backend:
+  name: github
+  repo: jiwonbaeq/Portfolio
+  branch: main
+  commit_messages:
+    update: "Update {{collection}}"
+
+site_url: https://jiwonbaeq.netlify.app
+media_folder: media          # where uploaded files are stored in the repo
+public_folder: /media        # how the site refers to them
+
+collections:
+  - name: site
+    label: Site
+    files:
+
+      # ── Work grid ───────────────────────────────────────────
+      - name: projects
+        label: Work grid
+        file: data/projects.json
+        format: json
+        fields:
+          - name: projects
+            label: Projects
+            label_singular: Project
+            widget: list
+            summary: "{{fields.title}}  ·  {{fields.client}}"
+            hint: Drag the handle to reorder. The first project is top-left on the site.
+            fields:
+              - { name: title,  label: Project name, widget: string }
+              - { name: client, label: Client,       widget: string, required: false }
+              - { name: agency, label: Agency,       widget: string, required: false }
+              - name: poster
+                label: Static thumbnail (image)
+                widget: image
+                required: false
+                hint: JPG or WebP, about 800px wide. Shown at rest.
+              - name: thumb
+                label: Hover loop (video)
+                widget: file
+                required: false
+                hint: Short muted MP4 or WebM, roughly 480px wide and under 5 MB. Plays on hover.
+              - name: vimeo
+                label: Vimeo link
+                widget: string
+                required: false
+                hint: Paste the full Vimeo URL (private links with ?h= work too). Opens in the lightbox.
+
+      # ── Contact page ────────────────────────────────────────
+      - name: contact
+        label: Contact page
+        file: data/contact.json
+        format: json
+        fields:
+          - name: portrait
+            label: Portrait
+            widget: image
+            required: false
+            hint: 4:5 image, about 1200px tall.
+          - name: bio
+            label: Bio
+            widget: text
+            hint: Leave a blank line between paragraphs.
+          - { name: email,     label: Email,             widget: string }
+          - { name: instagram, label: Instagram handle,  widget: string, hint: "Without the @" }
