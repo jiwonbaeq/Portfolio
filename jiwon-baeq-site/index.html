@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jiwon Baeq — Photography</title>
+<meta name="description" content="Jiwon Baeq — Director of Photography.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  /* ── Tokens ─────────────────────────────────────────────── */
+  :root{
+    --cols: 3;                 /* tiles per row on desktop (set to 9 for a literal 9-wide grid) */
+    --rows-in-view: 3;         /* tiles per column in the first viewport */
+    --ink:   #ffffff;
+    --paper: #000000;
+    --dim:   rgba(0,0,0,.55);  /* hover darkening */
+    --font: "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+    --font-head: "Instrument Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --ease: cubic-bezier(.2,.7,.2,1);
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0 }
+  html,body{ background:var(--paper); color:var(--ink); font-family:var(--font); -webkit-font-smoothing:antialiased }
+  body{ overflow-x:hidden }
+  a{ color:inherit; text-decoration:none }
+  button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer }
+  :focus-visible{ outline:2px solid var(--ink); outline-offset:3px }
+
+  /* ── Header ─────────────────────────────────────────────── */
+  .site-head{
+    position:fixed; inset:0 0 auto 0; z-index:20;
+    display:flex; justify-content:space-between; align-items:flex-start;
+    padding:22px 26px; pointer-events:none;
+    mix-blend-mode:difference;         /* stays legible over any thumbnail */
+  }
+  .site-head > *{ pointer-events:auto }
+  .wordmark{ font-family:var(--font-head); font-weight:700; font-size:45px; line-height:1; letter-spacing:-.02em; text-transform:uppercase }
+  .wordmark span{
+    display:block; text-transform:none;
+    font-weight:700; font-size:16px; line-height:1.2; letter-spacing:0; margin-top:6px;
+  }
+  .menu{ display:flex; gap:26px; font-family:var(--font); font-weight:400; font-size:14px; line-height:1; padding-top:calc(45px * .13) }
+  .menu a{ position:relative }
+  .menu a::after{
+    content:""; position:absolute; left:0; right:100%; bottom:-3px; height:1px; background:currentColor;
+    transition:right .3s var(--ease);
+  }
+  .menu a:hover::after{ right:0 }
+
+  /* ── Grid ───────────────────────────────────────────────── */
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(var(--cols), 1fr);
+    grid-auto-rows:calc(100svh / var(--rows-in-view));
+    width:100vw;
+  }
+  .tile{
+    position:relative; overflow:hidden; background:#0a0a0a;
+    display:block; width:100%; height:100%; text-align:left;
+  }
+  .tile img,
+  .tile video,
+  .tile .placeholder{
+    position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block;
+  }
+  .tile .placeholder{
+    background:
+      linear-gradient(135deg, hsl(var(--h) 18% 14%), hsl(calc(var(--h) + 40) 22% 6%));
+  }
+  .tile video{ opacity:0; transition:opacity .4s var(--ease) }       /* hidden until hover */
+  .tile.is-playing video{ opacity:1 }
+  .tile::before{                                   /* resting 10% darkening on every still */
+    content:""; position:absolute; inset:0; z-index:1; background:rgba(0,0,0,.10);
+  }
+  .tile::after{                                    /* extra darkening on hover */
+    content:""; position:absolute; inset:0; z-index:1; background:var(--dim);
+    opacity:0; transition:opacity .35s var(--ease);
+  }
+  .tile .title{
+    position:absolute; inset:0; z-index:2;
+    display:flex; align-items:center; justify-content:space-between; gap:28px;
+    padding:24px 12px;
+    font-size:14px; line-height:1.3; font-weight:300; letter-spacing:0; text-transform:capitalize;
+    opacity:0; transition:opacity .35s var(--ease);
+  }
+  .tile .title span{ flex:0 1 auto; min-width:0; overflow-wrap:break-word }   /* wraps to 2 lines only when the gaps get tight */
+  .tile .title .project{ text-align:left }
+  .tile .title .client { text-align:center }
+  .tile .title .agency { text-align:right }
+  .tile:hover::after, .tile:focus-visible::after{ opacity:1 }
+  .tile:hover .title, .tile:focus-visible .title{ opacity:1 }
+
+  /* ── More cue ───────────────────────────────────────────── */
+  .more{
+    position:fixed; left:50%; bottom:22px; transform:translateX(-50%); z-index:20;
+    display:flex; align-items:center; gap:9px;
+    font-size:15px; line-height:1; padding:8px 10px;
+    mix-blend-mode:difference;
+    transition:opacity .4s var(--ease), transform .4s var(--ease);
+  }
+  .more svg{ width:12px; height:12px; display:block; animation:nod 2.4s var(--ease) infinite }
+  .more.is-hidden{ opacity:0; transform:translate(-50%, 12px); pointer-events:none }
+  @keyframes nod{ 0%,100%{ transform:translateY(0) } 50%{ transform:translateY(3px) } }
+
+  /* ── Lightbox ───────────────────────────────────────────── */
+  .lightbox{
+    position:fixed; inset:0; z-index:40; display:none;
+    background:rgba(0,0,0,.94);
+    align-items:center; justify-content:center; padding:5vmin;
+  }
+  .lightbox.is-open{ display:flex }
+  .lightbox .frame{
+    position:relative; width:min(90vw, calc(90vh * 16 / 9)); aspect-ratio:16/9;
+    background:#000;
+  }
+  .lightbox iframe{ position:absolute; inset:0; width:100%; height:100%; border:0 }
+  .lightbox .caption{
+    position:absolute; left:0; top:calc(100% + 14px); font-size:15px;
+  }
+  .lightbox .close{
+    position:fixed; top:22px; right:26px; font-size:15px; line-height:1.3; padding:2px 0;
+  }
+
+  /* ── Footer / contact ───────────────────────────────────── */
+  .foot{
+    padding:60px 26px 40px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:16px;
+    font-size:14px; line-height:1.5; opacity:.7;
+  }
+
+  /* ── Mobile: single column stack ────────────────────────── */
+  @media (max-width: 720px){
+    .grid{ grid-template-columns:1fr; grid-auto-rows:calc(100vw * 9 / 16) }
+    .site-head{ padding:18px 18px }
+    .wordmark{ font-size:30px }
+    .wordmark span{ font-size:13px; margin-top:4px }
+    .menu{ font-size:12px; padding-top:calc(30px * .13) }
+    .tile .title{ display:none }        /* no hover text on touch devices */
+    .more{ display:none }
+    .lightbox .close{ top:18px; right:18px }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition:none !important; animation:none !important }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <a class="wordmark" href="index.html" aria-label="Jiwon Baeq — Director of Photography, home">Jiwon Baeq<span>Director of Photography</span></a>
+  <nav class="menu" aria-label="Main">
+    <a href="contact.html">Contact</a>
+  </nav>
+</header>
+
+<main id="top">
+  <section class="grid" id="grid" aria-label="Selected work"></section>
+</main>
+
+<button class="more" id="more" type="button" aria-label="Scroll to more work">
+  <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M1 3.5l5 5 5-5"/></svg>
+  More
+</button>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Project video" hidden>
+  <button class="close" id="close" type="button">Close</button>
+  <div class="frame">
+    <div id="player"></div>
+    <p class="caption" id="caption"></p>
+  </div>
+</div>
+
+<footer class="foot">
+  <span>© <span id="year"></span> Jiwon Baeq</span>
+  <a href="mailto:jiwonbaeq@gmail.com">jiwonbaeq@gmail.com</a>
+</footer>
+
+<script>
+  /* ── Project data ─────────────────────────────────────────
+     Edited through the CMS at /admin — lives in data/projects.json.
+  ────────────────────────────────────────────────────────── */
+  let PROJECTS = [];
+
+  /* Accept a full Vimeo URL or a bare ID; return {id, hash} */
+  function parseVimeo(v) {
+    if (!v) return null;
+    const m = String(v).match(/(\d{6,})(?:\/([0-9a-f]{6,}))?/i);
+    if (!m) return null;
+    const hash = m[2] || (String(v).match(/[?&]h=([0-9a-f]+)/i) || [])[1];
+    return { id: m[1], hash };
+  }
+
+  /* ── Build grid ─────────────────────────────────────────── */
+  const grid = document.getElementById('grid');
+  function buildGrid() {
+  PROJECTS.forEach((p, i) => {
+    const tile = document.createElement('button');
+    tile.className = 'tile';
+    tile.type = 'button';
+    tile.dataset.index = i;
+    tile.setAttribute('aria-label', `Play ${p.title}`);
+
+    if (p.poster) {
+      const img = document.createElement('img');
+      img.src = p.poster; img.alt = ''; img.loading = 'lazy'; img.decoding = 'async';
+      tile.appendChild(img);
+    } else {
+      const ph = document.createElement('div');
+      ph.className = 'placeholder';
+      ph.style.setProperty('--h', (i * 37) % 360);
+      tile.appendChild(ph);
+    }
+
+    if (p.thumb) {
+      const v = document.createElement('video');
+      v.muted = true; v.loop = true; v.playsInline = true; v.preload = 'none';
+      v.setAttribute('muted', ''); v.setAttribute('playsinline', '');
+      v.dataset.src = p.thumb;            // attached on first hover
+      tile.appendChild(v);
+
+      tile.addEventListener('mouseenter', () => {
+        if (!v.src) v.src = v.dataset.src;
+        v.play().then(() => tile.classList.add('is-playing')).catch(() => {});
+      });
+      tile.addEventListener('mouseleave', () => {
+        tile.classList.remove('is-playing');
+        v.pause();
+        v.currentTime = 0;                // back to the start for next hover
+      });
+    }
+
+    const t = document.createElement('span');
+    t.className = 'title';
+    [['project', p.title], ['client', p.client], ['agency', p.agency]].forEach(([cls, text]) => {
+      const s = document.createElement('span');
+      s.className = cls;
+      s.textContent = text || '';
+      t.appendChild(s);
+    });
+    tile.appendChild(t);
+    grid.appendChild(tile);
+  });
+  }
+
+  fetch('data/projects.json', { cache: 'no-cache' })
+    .then(r => r.json())
+    .then(d => { PROJECTS = d.projects || []; buildGrid(); })
+    .catch(() => { grid.innerHTML = '<p style="padding:120px 26px">Could not load projects. Check data/projects.json.</p>'; });
+
+  /* ── Lightbox ───────────────────────────────────────────── */
+  const lightbox = document.getElementById('lightbox');
+  const player   = document.getElementById('player');
+  const caption  = document.getElementById('caption');
+  let lastFocus  = null;
+
+  function openProject(i) {
+    const p = PROJECTS[i];
+    const vm = parseVimeo(p.vimeo);
+    if (!vm) { alert(`No Vimeo link set yet for “${p.title}”.`); return; }
+    lastFocus = document.activeElement;
+    const { id, hash } = vm;
+    const params = new URLSearchParams({ autoplay:1, title:0, byline:0, portrait:0, dnt:1 });
+    if (hash) params.set('h', hash);
+    player.innerHTML = `<iframe src="https://player.vimeo.com/video/${id}?${params}"
+      allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="${p.title}"></iframe>`;
+    caption.textContent = p.title;
+    lightbox.hidden = false;
+    lightbox.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('close').focus();
+  }
+  function closeProject() {
+    lightbox.classList.remove('is-open');
+    lightbox.hidden = true;
+    player.innerHTML = '';                 // stops playback
+    document.body.style.overflow = '';
+    lastFocus && lastFocus.focus();
+  }
+
+  grid.addEventListener('click', e => {
+    const tile = e.target.closest('.tile');
+    if (tile) openProject(+tile.dataset.index);
+  });
+  document.getElementById('close').addEventListener('click', closeProject);
+  lightbox.addEventListener('click', e => { if (e.target === lightbox) closeProject(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !lightbox.hidden) closeProject(); });
+
+  /* ── More cue ───────────────────────────────────────────── */
+  const more = document.getElementById('more');
+  more.addEventListener('click', () => {
+    window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
+  });
+  const toggleMore = () => more.classList.toggle('is-hidden', window.scrollY > 40);
+  window.addEventListener('scroll', toggleMore, { passive: true });
+  toggleMore();
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
