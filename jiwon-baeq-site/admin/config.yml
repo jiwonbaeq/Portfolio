@@ -7,7 +7,7 @@ backend:
   commit_messages:
     update: "Update {{collection}}"
 
-site_url: https://YOUR-SITE.netlify.app
+site_url: https://jiwonbaeq.netlify.app
 media_folder: media          # where uploaded files are stored in the repo
 public_folder: /media        # how the site refers to them
 
