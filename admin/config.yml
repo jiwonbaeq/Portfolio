@@ -1,15 +1,12 @@
 # ── Sveltia CMS configuration ─────────────────────────────────
-# One thing to change: put your GitHub username and repo name below.
 backend:
   name: github
-  repo: YOUR-GITHUB-USERNAME/YOUR-REPO-NAME
+  repo: jiwonbaeq/Portfolio
   branch: main
   commit_messages:
     update: "Update {{collection}}"
 
-site_url: https://YOUR-SITE.netlify.app
-media_folder: media          # where uploaded files are stored in the repo
-public_folder: /media        # how the site refers to them
+site_url: https://jiwonbaeq.com
 
 collections:
   - name: site
@@ -46,7 +43,7 @@ collections:
                 label: Vimeo link
                 widget: string
                 required: false
-                hint: Paste the full Vimeo URL (private links with ?h= work too). Opens in the lightbox.
+                hint: "Paste the full Vimeo URL (private links with ?h= work too). Opens in the lightbox."
 
       # ── Contact page ────────────────────────────────────────
       - name: contact
