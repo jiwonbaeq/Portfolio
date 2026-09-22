@@ -116,9 +116,9 @@
       "title": "Swisspers",
       "client": "Client",
       "agency": "This January",
-      "poster": "",
-      "thumb": "",
-      "vimeo": ""
+      "poster": "https://pub-8e5971bb7daa477f876d2174bbb1ce93.r2.dev/Swisspers0.jpg",
+      "thumb": "https://pub-8e5971bb7daa477f876d2174bbb1ce93.r2.dev/Swisspers.mp4",
+      "vimeo": "https://vimeo.com/1127881092/0d0bbbe060?fl=tl&fe=ec&share=copy"
     },
     {
       "title": "CTIA Lemonade",
@@ -180,9 +180,9 @@
       "title": "SPY",
       "client": "Client",
       "agency": "This January",
-      "poster": "",
-      "thumb": "",
-      "vimeo": ""
+      "poster": "https://pub-8e5971bb7daa477f876d2174bbb1ce93.r2.dev/SPY0.jpg",
+      "thumb": "https://pub-8e5971bb7daa477f876d2174bbb1ce93.r2.dev/SPY.mp4",
+      "vimeo": "https://vimeo.com/1225070033?fl=tl&fe=ec&share=copy"
     },
     {
       "title": "AA Spending",
@@ -196,9 +196,9 @@
       "title": "Universal Man Fashion",
       "client": "Client",
       "agency": "This January",
-      "poster": "",
-      "thumb": "",
-      "vimeo": ""
+      "poster": "https://pub-8e5971bb7daa477f876d2174bbb1ce93.r2.dev/Universal%20Man%20Fashion0.jpg",
+      "thumb": "https://pub-8e5971bb7daa477f876d2174bbb1ce93.r2.dev/Universal%20Man%20Fashion.mp4",
+      "vimeo": "https://vimeo.com/1225072189?fl=tl&fe=ec&share=copy"
     }
   ]
 }
