@@ -35,12 +35,12 @@
     display:flex; justify-content:space-between; align-items:flex-start;
     padding:22px 26px;
   }
-  .wordmark{ display:block; width:var(--logo-w, 220px) }
+  .wordmark{ display:block; width:var(--logo-w, 228px) }
   .wordmark img{ display:block; width:100%; height:auto }
   .wordmark .role{
     display:block; white-space:nowrap; text-transform:uppercase;
     /* ── Subtitle size: change these two numbers ── */
-    font-size:16px;           /* desktop */
+    font-size:15.5px;         /* desktop */
     margin-top:7px;           /* gap under the logo */
     font-family:var(--font-head); font-weight:700; line-height:1.2;
   }
@@ -79,9 +79,9 @@
   }
   @media (max-width: 720px){
     .site-head{ padding:18px }
-    .wordmark{ --logo-w:150px }
-    .wordmark .role{ font-size:13px; margin-top:5px }   /* subtitle size on phones */
-    .menu{ font-size:12px; padding-top:calc(21px * .13) }
+    .wordmark{ --logo-w:168px }
+    .wordmark .role{ font-size:11.5px; margin-top:5px }   /* subtitle size on phones */
+    .menu{ font-size:12px; padding-top:4px }
     .about p{ font-size:16px }
   }
   @media (prefers-reduced-motion: reduce){ *{ transition:none !important } }
