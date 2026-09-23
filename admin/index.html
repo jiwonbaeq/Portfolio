@@ -8,8 +8,8 @@
 <link rel="canonical" href="https://jiwonbaeq.com/">
 
 <!-- Favicon -->
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/favicon.svg">
+<link rel="icon" href="https://pub-8e5971bb7daa477f876d2174bbb1ce93.r2.dev/Favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="https://pub-8e5971bb7daa477f876d2174bbb1ce93.r2.dev/Favicon.svg">
 
 <!-- Link preview (Open Graph + Twitter) -->
 <meta property="og:type" content="website">
@@ -70,12 +70,16 @@
     mix-blend-mode:difference;         /* stays legible over any thumbnail */
   }
   .site-head > *{ pointer-events:auto }
-  .wordmark{ font-family:var(--font-head); font-weight:700; font-size:31.5px; line-height:1; letter-spacing:-.02em; text-transform:uppercase }
-  .wordmark span{
-    display:block; text-transform:none;
-    font-weight:700; font-size:16px; line-height:1.2; letter-spacing:0; margin-top:6px;
+  .wordmark{ display:block; width:var(--logo-w, 228px) }
+  .wordmark img{ display:block; width:100%; height:auto }
+  .wordmark .role{
+    display:block; white-space:nowrap; text-transform:uppercase;
+    /* ── Subtitle size: change these two numbers ── */
+    font-size:15.5px;         /* desktop */
+    margin-top:7px;           /* gap under the logo */
+    font-family:var(--font-head); font-weight:700; line-height:1.2;
   }
-  .menu{ display:flex; gap:26px; font-family:var(--font); font-weight:400; font-size:14px; line-height:1; padding-top:calc(31.5px * .13) }
+  .menu{ display:flex; gap:26px; font-family:var(--font); font-weight:400; font-size:14px; line-height:1; padding-top:4px }
   .menu a{ position:relative }
   .menu a::after{
     content:""; position:absolute; left:0; right:100%; bottom:-3px; height:1px; background:currentColor;
@@ -141,7 +145,7 @@
   /* ── Lightbox ───────────────────────────────────────────── */
   .lightbox{
     position:fixed; inset:0; z-index:40; display:none;
-    background:rgba(0,0,0,.94);
+    background:rgba(0,0,0,.5);   /* grid stays visible behind — click to close */
     align-items:center; justify-content:center; padding:5vmin;
   }
   .lightbox.is-open{ display:flex }
@@ -152,9 +156,11 @@
   .lightbox iframe{ position:absolute; inset:0; width:100%; height:100%; border:0 }
   .lightbox .caption{
     position:absolute; left:0; top:calc(100% + 14px); font-size:15px;
+    text-shadow:0 1px 6px rgba(0,0,0,.9);   /* readable over a half-dimmed grid */
   }
   .lightbox .close{
     position:fixed; top:22px; right:26px; font-size:15px; line-height:1.3; padding:2px 0;
+    text-shadow:0 1px 6px rgba(0,0,0,.9);
   }
 
   /* ── Footer / contact ───────────────────────────────────── */
@@ -167,9 +173,9 @@
   @media (max-width: 720px){
     .grid{ grid-template-columns:1fr; grid-auto-rows:calc(100vw * 9 / 16) }
     .site-head{ padding:18px 18px }
-    .wordmark{ font-size:21px }
-    .wordmark span{ font-size:13px; margin-top:4px }
-    .menu{ font-size:12px; padding-top:calc(21px * .13) }
+    .wordmark{ --logo-w:168px }
+    .wordmark .role{ font-size:11.5px; margin-top:5px }   /* subtitle size on phones */
+    .menu{ font-size:12px; padding-top:4px }
     .tile .title{ display:none }        /* no hover text on touch devices */
     .more{ display:none }
     .lightbox .close{ top:18px; right:18px }
@@ -183,7 +189,7 @@
 <body>
 
 <header class="site-head">
-  <a class="wordmark" href="index.html" aria-label="Jiwon Baeq — Director of Photography, home">Jiwon Baeq<span>Director of Photography</span></a>
+  <a class="wordmark" href="index.html" aria-label="Jiwon Baeq — Director of Photography, home"><img src="https://pub-8e5971bb7daa477f876d2174bbb1ce93.r2.dev/Jiwon%20Baeq%20Med.png" alt="Jiwon Baeq"><span class="role">Director of Photography</span></a>
   <nav class="menu" aria-label="Main">
     <a href="contact.html">Contact</a>
   </nav>
@@ -333,5 +339,6 @@
 
   document.getElementById('year').textContent = new Date().getFullYear();
 </script>
+
 </body>
 </html>
