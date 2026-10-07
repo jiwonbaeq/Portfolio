@@ -1,0 +1,3 @@
+# TJC Fam calendar: www.jiwonbaeq.com/fam is served by the separate "tjcfam" Netlify site.
+/fam/*  https://tjcfam.netlify.app/fam/:splat  200!
+/fam    https://tjcfam.netlify.app/fam/        200!
